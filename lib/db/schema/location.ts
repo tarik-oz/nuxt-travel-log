@@ -20,10 +20,11 @@ export const InsertLocation = createInsertSchema(location, {
   description: field => field.max(1000),
   lat: field => field.min(-90).max(90),
   long: field => field.min(-180).max(180),
-}).omit({
-  id: true,
-  slug: true,
-  userId: true,
-  createdAt: true,
-  updatedAt: true,
-});
+})
+  .omit({
+    id: true,
+    slug: true,
+    userId: true,
+    createdAt: true,
+    updatedAt: true,
+  });
