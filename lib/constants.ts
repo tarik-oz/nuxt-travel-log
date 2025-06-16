@@ -1,0 +1,1 @@
+export const ANTALYA_COORDINATES = [36.8848, 30.704];
