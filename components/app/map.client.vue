@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { MglEvent } from "@indoorequal/vue-maplibre-gl";
 import type { LngLat } from "maplibre-gl";
 
 import { ANKARA_COORDINATES } from "~/lib/constants";
@@ -18,6 +19,13 @@ function updateAddedPoint(location: LngLat) {
   }
 };
 
+function onDoubleClick(mglEvent: MglEvent<"dblclick">) {
+  if (mapStore.addedPoint) {
+    mapStore.addedPoint.lat = mglEvent.event.lngLat.lat;
+    mapStore.addedPoint.long = mglEvent.event.lngLat.lng;
+  }
+}
+
 onMounted(() => {
   mapStore.init();
 });
@@ -28,12 +36,14 @@ onMounted(() => {
     :map-style="style"
     :center="ANKARA_COORDINATES"
     :zoom="zoom"
+    :double-click-zoom="false"
+    @map:dblclick="onDoubleClick"
   >
     <MglNavigationControl />
     <MglMarker
       v-if="mapStore.addedPoint"
       draggable
-      :coordinates="ANKARA_COORDINATES"
+      :coordinates="[mapStore.addedPoint.long, mapStore.addedPoint.lat]"
       @update:coordinates="updateAddedPoint"
     >
       <template #marker>
